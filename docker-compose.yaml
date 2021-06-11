@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  geth:
+    image: ethereum/client-go
+    ports:
+      - 8545:8545
+      - 8546:8546
+      - 30303:30303
+      - 30304:30304
+    volumes:
+      - ./config/genesis.json:/genesis.json
+      - ./scripts/start.sh:/start.sh
+      - ./data:/${DATADIR}
+    environment:
+      DATADIR: ${DATADIR}
+      COINBASE_PASS: ${COINBASE_PASS}
+    # entrypoint: sh -c "while true; do sleep 1000; done"
+    # entrypoint: geth --ropsten --syncmode "light"
+    entrypoint: /start.sh
