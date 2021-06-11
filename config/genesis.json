@@ -14,8 +14,10 @@
       "epoch": 30000
     }
   },
-  "extradata": "",
+  "extradata": "{{EXTRA_DATA}}",
   "difficulty": "1",
   "gasLimit": "0x8000000",
-  "alloc": {}
+  "alloc": {
+    "{{OWNER_ACCOUNT}}": { "balance": "1000000000000000000" }
+  }
 }
