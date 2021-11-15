@@ -12,10 +12,8 @@ services:
     volumes:
       - ./config/genesis.json:/genesis.json
       - ./scripts/start.sh:/start.sh
-      - ./data:/${DATADIR}
+      - ./keystore:/${DATADIR}/keystore
     environment:
       DATADIR: ${DATADIR}
       COINBASE_PASS: ${COINBASE_PASS}
-    # entrypoint: sh -c "while true; do sleep 1000; done"
-    # entrypoint: geth --ropsten --syncmode "light"
     entrypoint: /start.sh
