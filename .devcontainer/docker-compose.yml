@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  geth:
+    volumes:
+      - .:/workspace:cached
+      - vscode-exts:/root/.vscode-server/extensions
+      - vscode-exts-insiders:/root/.vscode-server-insiders/extensions
+    command: /bin/sh -c "while sleep 1000; do :; done"
+      
+volumes:
+  vscode-exts:
+  vscode-exts-insiders:

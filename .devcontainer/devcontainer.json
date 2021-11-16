@@ -1,0 +1,12 @@
+{
+  "name": "Existing Docker Compose (Extend)",
+  "dockerComposeFile": ["../docker-compose.dev.yml", "docker-compose.yml"],
+  "service": "geth",
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#044"
+    }
+  },
+  "extensions": []
+}
