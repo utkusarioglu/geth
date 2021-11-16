@@ -70,13 +70,12 @@ function start_geth() {
     --allow-insecure-unlock \
     --http \
     --http.addr 0.0.0.0 \
-    --http.api "db,eth,net,web3,personal,web3,debug" \
+    --http.api "admin,debug,web3,eth,txpool,personal,clique,miner,net" \
     --http.corsdomain '*' \
     --ws \
     --ws.addr 0.0.0.0 \
-    --ws.api "db,eth,net,web3,personal,web3" \
+    --ws.api "admin,debug,web3,eth,txpool,personal,clique,miner,net" \
     --ws.origins '*'
-    # --dev \
 }
 
 create_accounts
