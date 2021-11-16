@@ -1,8 +1,7 @@
-version: '3.8'
+version: '3.9'
 
 services:
   geth:
-    # image: ethereum/client-go
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -15,8 +14,8 @@ services:
     volumes:
       - ./config/genesis.json:/genesis.json
       - ./scripts/start.sh:/start.sh
-      - ./keystore:/${DATADIR}/keystore
+      - ./keystore:${DATADIR}/keystore
     environment:
       DATADIR: ${DATADIR}
       COINBASE_PASS: ${COINBASE_PASS}
-    entrypoint: /start.sh
+    entrypoint: scripts/start.sh

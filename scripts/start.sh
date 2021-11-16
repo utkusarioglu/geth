@@ -3,7 +3,7 @@
 # Gets the account address at the given index
 # @param index - index of the account to be returned
 function get_account_address() {
-  geth account list --datadir $DATADIR | head -n "$1" | tail -n 1 | awk -F '[{}]' '{print($2)}'
+  geth account list --datadir "$DATADIR" | head -n "$1" | tail -n 1 | awk -F '[{}]' '{print($2)}'
 }
 
 # Amends the genesis.json file that will be fed to the geth instance
@@ -26,13 +26,13 @@ function ammend_genesis_file() {
     > /genesis_edit.json"
 
   echo "Using the following genesis file:"
-  cat genesis_edit.json
+  cat /genesis_edit.json
 }
 
 # Creates default accounts if none exists
 function create_accounts() {
   echo $COINBASE_PASS > /.pw
-  if [  -n "$(find /$DATADIR/keystore -prune -empty 2>/dev/null)" ]
+  if [  -n "$(find $DATADIR/keystore -prune -empty 2>/dev/null)" ]
   then
     echo "No accounts found. Creating 5 accounts..."
     for i in 1 2 3 4 5; do
