@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Geth",
+      "type": "shell",
+      "command": "scripts/start.sh"
+    },
+    {
+      "label": "Export accounts",
+      "type": "shell",
+      "command": "scripts/export.sh ${input:EXPORT_PATH}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "EXPORT_PATH",
+      "description": "export path",
+      "type": "promptString",
+      "default": "/workspace/accounts"
+    }
+  ]
+}
