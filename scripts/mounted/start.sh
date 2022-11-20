@@ -10,6 +10,7 @@ function get_account_address() {
 # It prints the final genesis_edit.json file on the console as well as
 # creating a genesis_edit.json file at the root.
 function ammend_genesis_file() {
+  CHAIN_ID=$1
   EXTRA_DATA_START="0x$(printf %64s | tr " " "0")" #32 zero bytes
   EXTRA_DATA_END="$(printf %130s | tr " " "0")" # 65 zero bytes
   EXTRA_DATA="${EXTRA_DATA_START}$(get_account_address 1)${EXTRA_DATA_END}"
@@ -21,6 +22,7 @@ function ammend_genesis_file() {
   done;
 
   sh -c "sed -e \"s/{{EXTRA_DATA}}/$EXTRA_DATA/g\" \
+    -e \"s/{{CHAIN_ID}}/$CHAIN_ID/g\" \
     $ACCOUNT_ARGS \
     /genesis.json \
     > /genesis_edit.json"
@@ -31,6 +33,7 @@ function ammend_genesis_file() {
 
 # Creates default accounts if none exists
 function create_accounts() {
+  echo "Creating accounts..."
   echo $COINBASE_PASS > /.pw
   if [  -n "$(find $DATADIR/keystore -prune -empty 2>/dev/null)" ]
   then
@@ -44,10 +47,12 @@ function create_accounts() {
 # Amends genesis file with keystore accounts
 # Inits geth with these accounts
 function init_geth() {
+  CHAIN_ID=$1
+  echo "Initializing geth with chain id $CHAIN_ID..."
   if [ ! -f /genesis_edit.json ];
   then
     echo "Ammending genesis file with runtime values..."
-    ammend_genesis_file 
+    ammend_genesis_file $CHAIN_ID
 
     echo "Initializing Geth"
     geth init "/genesis_edit.json" --datadir "$DATADIR"
@@ -60,14 +65,14 @@ function start_geth() {
   echo "Starting Geth..."
   geth \
     --datadir "$DATADIR" \
-    --nodiscover \
+    --allow-insecure-unlock \
     --unlock "$(get_account_address 1)" \
     --password "/.pw" \
     --networkid 1 \
+    --nodiscover \
     --mine \
     --miner.etherbase "$(get_account_address 1)" \
     --miner.threads 1  \
-    --allow-insecure-unlock \
     --http \
     --http.addr 0.0.0.0 \
     --http.api "admin,debug,web3,eth,txpool,personal,clique,miner,net" \
@@ -79,5 +84,5 @@ function start_geth() {
 }
 
 create_accounts
-init_geth
+init_geth $CHAIN_ID # this is an environment variable
 start_geth
